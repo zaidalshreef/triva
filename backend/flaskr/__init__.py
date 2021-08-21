@@ -214,7 +214,7 @@ def create_app(test_config=None):
     }),422
     
   @app.errorhandler(400)
-  def unprocessable_entity(error):
+  def bad_request(error):
     return jsonify({
       "success": False,
       "error": 400,
