@@ -22,7 +22,7 @@ class TriviaTestCase(unittest.TestCase):
             'question': 'new question ',
             'answer': 'new answer',
             'difficulty': 1,
-            'category': '1'
+            'category': 1
         }
 
 
@@ -104,7 +104,23 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'The request was well-formed but was unable to be followed due to semantic errors.')
         
-        
+    def test_add_new_question(self):
+   
+        questions = Question.query.all()
+
+        res = self.client().post('/questions', json=self.new_question)
+        data = json.loads(res.data)
+
+        questions_after_add = Question.query.all()
+        new_question_id = data['created']
+
+        question = Question.query.filter_by(id=new_question_id)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(len(questions_after_add), len(questions)+1)
+        self.assertIsNotNone(question)
+    
     
 # Make the tests conveniently executable
 if __name__ == "__main__":
