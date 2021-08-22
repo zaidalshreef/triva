@@ -53,7 +53,7 @@ def create_app(test_config=None):
 
   @app.route("/questions")
   def get_questions():
-    questions = Question.query.all()
+    questions = Question.query.order_by(Question.id).all()
     total_questions = len(questions)
     current_questions = pagination_question(request,questions)
     
@@ -94,7 +94,8 @@ def create_app(test_config=None):
   def create_question():
     
     data = request.get_json()
-    
+   
+   
     try:
       question = Question(
         question=data.get('question'),
@@ -102,9 +103,14 @@ def create_app(test_config=None):
         category=data.get("category"),
         difficulty=data.get('difficulty'))
       question.insert()
+      questions = Question.query.order_by(Question.id).all()
+      total_questions = len(questions)
+      current_questions = pagination_question(request,questions)
       return jsonify({
         "success": True,
-        "questions":question
+        "created": question.id,
+        "questions":current_questions,
+        "total_questions": total_questions,
       })
     
     except:
