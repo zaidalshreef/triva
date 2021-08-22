@@ -80,11 +80,12 @@ def create_app(test_config=None):
    
     question = Question.query.get(id)
     if (question is None):
-      abort(404)
+      abort(422)
     try:
       question.delete()
       return jsonify({
       "success": True,
+      "deleted" : id
     })
     except:
       abort(422)
