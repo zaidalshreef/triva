@@ -94,7 +94,10 @@ def create_app(test_config=None):
   def create_question():
     
     data = request.get_json()
-   
+    
+            
+    if not ('question' in data and 'answer' in data and 'difficulty' in data and 'category' in data):
+            abort(422)
    
     try:
       question = Question(
