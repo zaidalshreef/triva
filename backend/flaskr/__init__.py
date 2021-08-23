@@ -122,15 +122,11 @@ def create_app(test_config=None):
   @app.route("/questions/search", methods=["POST"])
   def search_questions():
     data = request.get_json()
-    
-    search_term = data.get('searchTerm')
-    if search_term is None:
+    if "searchTerm" not in data:
       abort(422)
-    
+    search_term = data.get('searchTerm')
     questions = Question.query.filter(
       Question.question.ilike('%'+search_term+'%')).all()
-    
-    
     current_questions = pagination_question(request,questions)
     
     if len(current_questions) == 0 :
@@ -170,11 +166,11 @@ def create_app(test_config=None):
     
     data = request.get_json()
     
+    if not('previous_questions' in data and 'quiz_category' in data):
+      abort(422)
+    
     previous_questions = data.get('previous_questions')
     current_category = data.get('quiz_category')
-    
-    if (previous_questions is None) or (current_category is None):
-      abort(422)
     
     if current_category['id'] == 0:
       questions = Question.query.filter(

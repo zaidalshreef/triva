@@ -136,6 +136,85 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'The request was well-formed but was unable to be followed due to semantic errors.')
         
         
+    def test_search_question(self):
+        
+        search_term = {
+            "searchTerm": ""
+        }
+   
+        res = self.client().post('/questions/search', json=search_term)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data["questions"])
+        self.assertTrue(data["totalQuestions"])
+   
+    def test_422_search_term_not_found(self):
+        
+        search_term = {  }
+        res = self.client().post('/questions/search', json=search_term)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'The request was well-formed but was unable to be followed due to semantic errors.')
+
+
+    def test_404_search_questions_not_found(self):
+        
+        search_term = {"searchTerm": "aaaaaaaaaaaaa"}
+   
+        res = self.client().post('/questions/search', json=search_term)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'The server can not find the requested resource')
+
+    def test_search_question_by_category(self):
+        
+        res = self.client().get('/categories/1/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data["questions"])
+        self.assertTrue(data["total_questions"])
+        self.assertTrue(data["current_category"])
+        
+        
+    def test_404_category_not_found(self):
+        
+        res = self.client().get('/categories/xx/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'The server can not find the requested resource')
+
+    def test_play_quizzes(self):
+        quiz = {
+            'previous_questions': [],
+            'quiz_category': {'type': 'Science', 'id': 1}
+        }
+        res = self.client().post('/quizzes', json=quiz)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data["question"])
+
+        
+        
+    def test_422_play_quizzes(self):
+       
+        res = self.client().post('/quizzes', json={})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'The request was well-formed but was unable to be followed due to semantic errors.')
+    
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
