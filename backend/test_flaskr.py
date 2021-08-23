@@ -120,8 +120,22 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(len(questions_after_add), len(questions)+1)
         self.assertIsNotNone(question)
-    
-    
+   
+    def test_422_add_new_question(self):
+        new_question = {
+            'question': 'new question ',
+            'difficulty': 1,
+            'category': 1
+        }
+
+        res = self.client().post('/questions', json=new_question)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'The request was well-formed but was unable to be followed due to semantic errors.')
+        
+        
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
