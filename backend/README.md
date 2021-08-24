@@ -99,11 +99,12 @@ GET '/categories'
 ```
 
 
-GET `\questions?page=<page_number>` 
+GET `\questions?page=page number` 
 Fetches a paginated dictionary of questions of all available categories
-- *Request parameters (optional):* page:int 
+- *Request parameters (optional): page number
+- *Returns: a list of questions paginated 10 questions per page,list of categories,and total number of questions
 - *Example response:*  
- ``` {
+ ```{
   "categories": {
     "1": "Science", 
     "2": "Art", 
@@ -120,34 +121,92 @@ Fetches a paginated dictionary of questions of all available categories
       "difficulty": 2, 
       "id": 5, 
       "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    },  
+    }, 
     {
-      "answer": "Escher", 
-      "category": 2, 
+      "answer": "Muhammad Ali", 
+      "category": 4, 
       "difficulty": 1, 
-      "id": 16, 
-      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+      "id": 9, 
+      "question": "What boxer's original name is Cassius Clay?"
+    }, 
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }, 
+    {
+      "answer": "Brazil", 
+      "category": 6, 
+      "difficulty": 3, 
+      "id": 10, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    }, 
+    {
+      "answer": "George Washington Carver", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 12, 
+      "question": "Who invented Peanut Butter?"
+    }, 
+    {
+      "answer": "Lake Victoria", 
+      "category": 3, 
+      "difficulty": 2, 
+      "id": 13, 
+      "question": "What is the largest lake in Africa?"
+    }, 
+    {
+      "answer": "The Palace of Versailles", 
+      "category": 3, 
+      "difficulty": 3, 
+      "id": 14, 
+      "question": "In which royal palace would you find the Hall of Mirrors?"
     }
   ], 
   "success": true, 
-  "total_questions": 2
+  "total_questions": 19
 }
 ```
 
-DELETE `/questions/<question_id>`
-Delete an existing questions from the repository of available questions
-- *Request arguments:* question_id:int 
+DELETE `/questions/question_id`
+Delete question by id from the database
+- *Request arguments: question_id 
+- *Returns : id of the deleted question 
 - *Example response:* 
 ```
 {
-  "deleted": "28", 
+  "deleted": 20,
   "success": true
 }
 ```
 
 POST `/questions`
-Add a new question to the repository of available questions
-- *Request body:* {question:string, answer:string, difficulty:int, category:string}
+create  new question and add it to the database 
+- *Request body:* JSON {'question': new question , 'answer': new answer, 'difficulty': choose difficulty, 'category': choose category }
+- *Returns : id of the created question
 - *Example response:* 
 ```
 {
@@ -156,66 +215,68 @@ Add a new question to the repository of available questions
 }
 ```
 POST `/questions/search`
-Fetches all questions where a substring matches the search term (not case-sensitive)
-- *Request body:* {searchTerm:string}
+search for all questions where a substring matches the search term (not case-sensitive)
+- *Request body:* JSON {'searchTerm': search string}
+- *Returns : questions that match a search term ,and total questions
 - *Example response:*
 ```
 {
-  "current_category": null, 
+  "currentCategory": null,
   "questions": [
     {
-      "answer": "Lisbon", 
-      "category": 2, 
-      "difficulty": 1, 
-      "id": 29, 
-      "question": "What is the capital of Portugal?"
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
     }
-  ], 
-  "success": true, 
-  "total_questions": 1
+  ],
+  "success": true,
+  "totalQuestions": 23
 }
 ```
 
-GET `/categories/<int:category_id>/questions`
-Fetches a dictionary of questions for the specified category
-- *Request argument:* category_id:int
+GET `/categories/category_id/questions`
+Fetches a questions for a given category id
+- *Request argument:* category_id
+- *Returns : questions  in the given category id,Current Category,and total questions
 - *Example response:*
 ```
 {
-  "current_category": 1, 
+  "current_category": "Geography",
   "questions": [
     {
-      "answer": "The Liver", 
-      "category": 1, 
-      "difficulty": 4, 
-      "id": 20, 
-      "question": "What is the heaviest organ in the human body?"
-    }, 
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    },
     {
-      "answer": "Alexander Fleming", 
-      "category": 1, 
-      "difficulty": 3, 
-      "id": 21, 
-      "question": "Who discovered penicillin?"
-    }, 
-  ], 
-  "success": true, 
-  "total_questions": 2
+      "answer": "Agra",
+      "category": 3,
+      "difficulty": 2,
+      "id": 15,
+      "question": "The Taj Mahal is located in which Indian city?"
+    }
+  ],
+  "success": true,
+  "total_questions": 23
 }
 ```
 POST `/quizzes`
-Fetches one random question within a specified category. Previously asked questions are not asked again. 
-- *Request body:* {previous_questions: arr, quiz_category: {id:int, type:string}}
+Fetches a random question in the choosing category. Previous questions will not asked again. 
+- *Request body:* JSON{"previous_questions": [], "quiz_category": {"id": , "type": }}
 - *Example response*: 
 ```
 {
   "question": {
-    "answer": "The Liver", 
-    "category": 1, 
-    "difficulty": 4, 
-    "id": 20, 
-    "question": "What is the heaviest organ in the human body?"
-  }, 
+    "answer": "One",
+    "category": 2,
+    "difficulty": 4,
+    "id": 18,
+    "question": "How many paintings did Van Gogh sell in his lifetime?"
+  },
   "success": true
 }
 ```
