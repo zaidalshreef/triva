@@ -83,8 +83,8 @@ GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs.
-- ```
-- {
+```
+{
   "categories": {
     "1": "Science", 
     "2": "Art", 
@@ -103,8 +103,7 @@ GET `\questions?page=<page_number>`
 Fetches a paginated dictionary of questions of all available categories
 - *Request parameters (optional):* page:int 
 - *Example response:*  
- ``` 
- {
+ ``` {
   "categories": {
     "1": "Science", 
     "2": "Art", 
@@ -219,6 +218,8 @@ Fetches one random question within a specified category. Previously asked questi
   }, 
   "success": true
 }
+```
+
 ## Testing
 To run the tests, run
 ```
