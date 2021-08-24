@@ -102,7 +102,8 @@ GET `\questions?page=<page_number>`
 Fetches a paginated dictionary of questions of all available categories
 - *Request parameters (optional):* page:int 
 - *Example response:*  
- ``` {
+ ``` 
+ {
   "categories": {
     "1": "Science", 
     "2": "Art", 
